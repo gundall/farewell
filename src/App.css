@@ -1,10 +1,10 @@
 .App {
-  background-color: #282c34;
-  color: #fff;
+  display: flex;
+  flex-direction: column;
   height: 100vh;
+  overflow: hidden;
   text-align: center;
 }
-
 
 .App-header {
   display: flex;
@@ -12,4 +12,41 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
+}
+
+#pag-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+article {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  margin:  0 auto;
+  width: 100%;
+}
+
+article > div {
+  flex: 1;
+}
+
+article .img-container {
+  position: relative;
+  flex: 1;
+}
+
+article .img-container img {
+  max-height: 30vh;
+  position: fixed;
+  width: auto;
+}
+
+.fading-texts * {
+  opacity: 0;
 }
