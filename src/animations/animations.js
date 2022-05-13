@@ -192,7 +192,7 @@ const spin = (target, data = {}) => {
 };
 
 const translateToCenter = (target, data = {}) => {
-    const { onComplete, time } = data;
+    const { onComplete, onStart, time } = data;
     const finalTime = time && typeof time === "number" ? time : 6;
 
     gsap.set(target, {
@@ -207,7 +207,10 @@ const translateToCenter = (target, data = {}) => {
             Tween.kill();
         },
         onCompleteParams: [target],
-        onStart: () => {},
+        onStartParams: [target],
+        onStart: (target) => {
+            onStart && onStart(target);
+        },
         repeat: 0,
         x: (window.innerWidth + target.offsetWidth) / 2
     });
