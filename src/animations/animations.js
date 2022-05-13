@@ -91,14 +91,16 @@ const fadeIn = (target, data = {}) => {
     if (!checkValidTarget(target))
         return;
 
-    const { callback, duration } = data;
+    const { callback, delay, duration } = data;
 
-    const finalDuration = duration && typeof duration === "number" ? duration : 1;
     const finalCallback = callback && typeof callback === "function" ? callback : () => {};
+    const finalDelay = delay && typeof delay === "function" ? delay : 0;
+    const finalDuration = duration && typeof duration === "number" ? duration : 1;
 
     gsap.set(target, { opacity: 0 });
 
     const Tween = gsap.to(target, {
+        delay: finalDelay,
         duration: finalDuration,
         onComplete: finalCallback,
         onCompleteParams: [target],
@@ -112,14 +114,16 @@ const fadeOut = (target, data = {}) => {
     if (!checkValidTarget(target))
         return;
 
-    const { callback, duration } = data;
+    const { callback, delay, duration } = data;
 
-    const finalDuration = duration && typeof duration === "number" ? duration : 1;
     const finalCallback = callback && typeof callback === "function" ? callback : () => {};
+    const finalDelay = delay && typeof delay === "function" ? delay : 0;
+    const finalDuration = duration && typeof duration === "number" ? duration : 1;
 
     gsap.set(target, { opacity: 1 });
 
     const Tween = gsap.to(target, {
+        delay: finalDelay,
         duration: finalDuration,
         repeat: 0,
         opacity: 0,
@@ -186,6 +190,30 @@ const spin = (target, data = {}) => {
 
     return Tween;
 };
+
+const translateToCenter = (target, data = {}) => {
+    const { onComplete, time } = data;
+    const finalTime = time && typeof time === "number" ? time : 6;
+
+    gsap.set(target, {
+        left: `-${target.offsetWidth}px`
+    });
+    const Tween = gsap.to(target, {
+        delay: 0,
+        duration: finalTime,
+        ease: 'power1.in',
+        onComplete: (target) => {
+            onComplete && onComplete(target);
+            Tween.kill();
+        },
+        onCompleteParams: [target],
+        onStart: () => {},
+        repeat: 0,
+        x: (window.innerWidth + target.offsetWidth) / 2
+    });
+
+    return Tween;
+}
 
 // Función Ad-Hoc para la animación de EmptyList.
 const tumble = (target, time, repeat, callback) => {
@@ -287,5 +315,6 @@ export {
     fadeIn,
     fadeOut,
     shake,
+    translateToCenter,
     tumble
 };
