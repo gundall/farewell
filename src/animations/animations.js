@@ -196,7 +196,7 @@ const translateToCenter = (target, data = {}) => {
     const finalTime = time && typeof time === "number" ? time : 6;
 
     gsap.set(target, {
-        left: `-${target.offsetWidth}px`
+        left: `-${target.getBoundingClientRect().left + target.offsetWidth}px`
     });
     const Tween = gsap.to(target, {
         delay: 0,
@@ -213,6 +213,24 @@ const translateToCenter = (target, data = {}) => {
         },
         repeat: 0,
         x: (window.innerWidth + target.offsetWidth) / 2
+    });
+
+    return Tween;
+}
+
+const linearGrowShrink = (target, data = {}) => {
+    const {amount, onComplete} = data;
+    const Tween = gsap.to(target, {
+        delay: 0,
+        duration: 0.1,
+        ease: 'linear',
+        onComplete: (target) => {
+            Tween.kill();
+            onComplete && onComplete();
+        },
+        onCompleteParams: [target],
+        repeat: 0,
+        height: target.offsetHeight * (amount ?? 1)
     });
 
     return Tween;
@@ -317,6 +335,7 @@ export {
     beatOut,
     fadeIn,
     fadeOut,
+    linearGrowShrink,
     shake,
     translateToCenter,
     tumble

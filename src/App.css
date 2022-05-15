@@ -30,6 +30,10 @@
 }
 
 .App {
+  background-image: url(assets/images/curva_clara.svg), url(assets/images/curva.svg);
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -54,6 +58,7 @@
   flex-direction: column;
   flex: 1;
   overflow: hidden;
+  padding: 0 10vw;
 }
 
 article {
@@ -61,14 +66,10 @@ article {
   display: flex;
   flex: 1;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   overflow: hidden;
   margin:  0 auto;
   width: 100%;
-}
-
-article > div {
-  flex: 1;
 }
 
 article .img-container {
@@ -77,15 +78,44 @@ article .img-container {
 }
 
 article .img-container img {
-  max-height: 30vh;
-  position: fixed;
+  max-height: 100%;
+  position: absolute;
   width: auto;
 }
 
-.fading-texts * {
+.fading-texts {
   opacity: 0;
+}
+
+/* MarkerButton */
+.markerButton {
+  align-items: center;
+  background-color: #0fff0033;
+  border: none;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 5px;
+  transform-origin: top;
+  width: 40px;
+}
+.markerButton .growable {
+  height: 20px;
+}
+.markerButton .hidden {
+  visibility: hidden;
+}
+.markerButton img {
+  height: auto;
+  max-width: 75%;
 }
 
 #bso {
   display: none;
+}
+
+#markerButtons {
+  position: fixed;
+  right: 10vw;
 }

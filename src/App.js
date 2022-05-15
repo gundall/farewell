@@ -4,13 +4,20 @@ import React, {
 } from 'react';
 
 import JukeBox from './JukeBox';
+import MarkerButton from './MarkerButton';
 
 import './App.css';
-import box from './assets/images/box_office.png';
 import {
 	fadeIn,
+	fadeOut,
 	translateToCenter
 } from './animations/animations';
+
+import box from './assets/images/box_office.png';
+import audioIcon from './assets/images/audio_icon.png';
+import {
+	texts
+} from './config';
 
 function App() {
 	const [playBso, setPlayBso] = useState(false);
@@ -20,44 +27,58 @@ function App() {
 	const translatingBox = useRef();
 	const fadingText = useRef();
 	const fadingText2 = useRef();
-	const iframe = useRef();
+	const fadingText3 = useRef();
+	const fadeOutSection1 = useRef();
 
 	const handleCompleteBoxAnimation = () => {
 		fadeIn(fadingText.current, {
 			callback: () => {
-				fadeIn(fadingText2.current, {
-					delay: 5
+				fadeOut(fadeOutSection1.current, {
+					callback: () => {
+						fadeOutSection1.current.style.display = 'none';
+						fadeIn(fadingText2.current, {
+							callback: () => {
+								fadeIn(fadingText3.current, {
+									delay: 5000
+								})
+							},
+							delay: 7000
+						});
+					}
 				});
 			},
-			duration: 5
+			duration: 3
 		})
 	};
 
-	const handleMouseEnter = () => {
-	};
-
-	const toggleMusic = () => {
-		if (playBso) {
-			setTime(Date.now() - startTime);
-		}
-		setPlayBso(!playBso) ;
+	const handleMusicButtonClick = () => {
+		setPlayBso(!playBso);
+		playBso && setTime(Math.floor((Date.now() - startTime) / 1000));
 	};
 
 	return (
-		<div className="App" onMouseEnter={handleMouseEnter}>
+		<div className="App">
+			<div id="markerButtons">
+				<MarkerButton
+					onClick={handleMusicButtonClick}
+					tooltip={texts.music}
+				>
+					<img
+						alt={texts.music}
+						src={audioIcon}
+					/>
+				</MarkerButton>
+			</div>
+
 			<header className="App-header">
 				<h1>¡Lo conseguiste!</h1>
-				<button onClick={toggleMusic}>
-					{`${playBso ? 'Detener' : 'Reproducir'} música`}
-				</button>
 			</header>
 
 			<div id="pag-body">
-				<p>
-					Y como lo prometido es deuda... te voy a revelar mi secreto.
-				</p>
-
-				<article>
+				<article ref={fadeOutSection1}>
+					<p>
+						Y como lo prometido es deuda... te voy a revelar mi secreto.
+					</p>
 					{/* IMAGE */}
 					<div className="img-container">
 						<img
@@ -66,21 +87,28 @@ function App() {
 							src={box}
 							onLoad={() => {
 								translateToCenter(translatingBox.current, {
-									onComplete: handleCompleteBoxAnimation
+									onComplete: handleCompleteBoxAnimation,
+									time: 2
 								});
 							}}
 						/>
 					</div>
+					<p className="fading-texts" ref={fadingText}>
+						{texts.fadingText1}
+					</p>
+				</article>
+				<article>
 					{/* TEXT */}
-					<div className="fading-texts">
-						<p ref={fadingText}>Llevo tiempo planteándome una serie de cambios dentro de mi vida, y por diversos motivos, he decidido que...</p>
-						<h1 ref={fadingText2}>Alcachofas con lacón{/*Me voy de Blink.*/}</h1>
+					<div>
+						<h1 className="fading-texts" ref={fadingText2}>{texts.fadingText2}</h1>
+						<p className="fading-texts" ref={fadingText3}>
+							{texts.fadingText3}
+						</p>
 					</div>
 				</article>
 			</div>
 			<JukeBox
-				src={`https://www.youtube.com/embed/OuaoxOVfHS4?autoplay=${+playBso}${time ? `&start=${Math.floor(time / 1000)}` : ''}`}
-				ref={iframe}
+				src={`https://www.youtube.com/embed/OuaoxOVfHS4?start=${time}&autoplay=${playBso}`}
 			/>
 		</div>
 	);
