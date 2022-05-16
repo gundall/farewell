@@ -7,19 +7,15 @@ import {
 const MarkerButton = (props) => {
     const {children, onClick, tooltip} = props;
 
-    const handleMouseEnter = (e) => {
-        let shrinkTriggered = false;
+    const shrinkCallback = (target) => {
+        console.log('Pesezito');
+        linearGrowShrink(target, { amount: 0.5 });
+    };
 
-        const shrinkCallback = (e) => {
-            shrinkTriggered = true;
-        };
-        
+    const handleMouseEnter = (e) => {
         linearGrowShrink(e.currentTarget, {
             amount: 2,
             onComplete: (target) => {
-                shrinkTriggered
-                    ? linearGrowShrink(target, { amount: 0.5 })
-                    : shrinkCallback();
             }
         });
 
