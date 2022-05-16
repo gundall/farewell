@@ -31,7 +31,7 @@
 
 .App {
   background-image: url(assets/images/curva_clara.svg), url(assets/images/curva.svg);
-  background-position: bottom;
+  background-position: 100%;
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
@@ -53,12 +53,54 @@
   font-family: Bowlbyone;
 }
 
+#lightsoff {
+  align-items: center;
+  background-color: #000;
+  bottom: 0;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  left: 0;
+  padding: 0 10vw;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
+#lightsoff img {
+  filter: invert();
+  max-width: 40px;
+  margin-bottom: 10px;
+}
+#lightsoff button {
+  background-color: transparent;
+  background-image: url(assets/images/switch_off.png), url(assets/images/switch_on.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+  height: 80vh;
+  width: calc(80vh / 1.5);
+}
+#lightsoff.on {
+  background-color: transparent;
+  background-image: radial-gradient(ellipse at top, transparent -20%, #000000f0 30%, #000 70%);
+}
+#lightsoff.on button {
+  background-image: url(assets/images/switch_on.png);
+}
+
 #pag-body {
   display: flex;
   flex-direction: column;
   flex: 1;
+  max-height: 50vh;
   overflow: hidden;
   padding: 0 10vw;
+  pointer-events: none;
+  user-select: none;
 }
 
 article {
@@ -80,25 +122,43 @@ article .img-container {
 article .img-container img {
   max-height: 100%;
   position: absolute;
+  visibility: hidden;
   width: auto;
 }
 
 .fading-texts {
   opacity: 0;
 }
+.fading-texts-parent {
+  display: none;
+}
 
-/* MarkerButton */
+/* MarkerButtons */
+#markerButtons {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  right: 5vw;
+}
+
 .markerButton {
   align-items: center;
   background-color: #0fff0033;
   border: none;
   border-bottom-left-radius: 40px;
   border-bottom-right-radius: 40px;
+  box-shadow: 0px 0px 3px 0px #087500;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+  margin: 0 5px;
   padding: 8px 5px;
   transform-origin: top;
   width: 40px;
+}
+.markerButton:active {
+  opacity: 0.8;
 }
 .markerButton .growable {
   height: 20px;
@@ -115,7 +175,28 @@ article .img-container img {
   display: none;
 }
 
-#markerButtons {
-  position: fixed;
-  right: 10vw;
+@media screen and (min-width: 476px) {
+  #lightsoff,
+  #pag-body {
+    padding: 0 20vw;
+  }
+}
+@media screen and (min-width: 768px) {
+  #lightsoff,
+  #pag-body {
+    padding: 0 25vw;
+  }
+}
+
+@media screen and (min-height: 476px) {
+  #lightsoff button {
+    height: 60vh;
+    width: calc(60vh / 1.5);
+  }
+}
+@media screen and (min-height: 768px) {
+  #lightsoff button {
+    height: 40vh;
+    width: calc(40vh / 1.5);
+  }
 }

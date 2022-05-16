@@ -31,14 +31,15 @@ const shake = (target, rotation, time, callback) => {
     });
 };
 
-const beat = (target, factor, time, repeats, callback) => {
+const beat = (target, data) => {
     if (!checkValidTarget(target))
         return;
+    const { factor, time, repeats, onComplete } = data;
 
     const finalTime = time && typeof time === "number" ? time : 0.1;
     const finalFactor = factor && typeof factor === "number" ? factor : 1.2;
     const finalRepeats = repeats && typeof repeats === "number" ? repeats : 1;
-    const finalCallback = callback && typeof callback === "function" ? callback : () => {};
+    const finalOnComplete = onComplete && typeof onComplete === "function" ? onComplete : () => {};
 
     gsap.to(target, {
         duration: finalTime,
@@ -46,7 +47,7 @@ const beat = (target, factor, time, repeats, callback) => {
             gsap.to(target, {
                 duration: finalTime,
                 onCompleteParams: [target],
-                onComplete: finalCallback,
+                onComplete: finalOnComplete,
                 repeat: finalRepeats,
                 scale: 1,
                 yoyo: true
@@ -94,7 +95,7 @@ const fadeIn = (target, data = {}) => {
     const { callback, delay, duration } = data;
 
     const finalCallback = callback && typeof callback === "function" ? callback : () => {};
-    const finalDelay = delay && typeof delay === "function" ? delay : 0;
+    const finalDelay = delay && typeof delay === "number" ? delay : 0;
     const finalDuration = duration && typeof duration === "number" ? duration : 1;
 
     gsap.set(target, { opacity: 0 });
@@ -117,7 +118,7 @@ const fadeOut = (target, data = {}) => {
     const { callback, delay, duration } = data;
 
     const finalCallback = callback && typeof callback === "function" ? callback : () => {};
-    const finalDelay = delay && typeof delay === "function" ? delay : 0;
+    const finalDelay = delay && typeof delay === "number" ? delay : 0;
     const finalDuration = duration && typeof duration === "number" ? duration : 1;
 
     gsap.set(target, { opacity: 1 });
@@ -219,18 +220,23 @@ const translateToCenter = (target, data = {}) => {
 }
 
 const linearGrowShrink = (target, data = {}) => {
-    const {amount, onComplete} = data;
+    const {amount, onComplete, onStart, value} = data;
+    console.log(amount, value);
     const Tween = gsap.to(target, {
         delay: 0,
         duration: 0.1,
         ease: 'linear',
         onComplete: (target) => {
             Tween.kill();
-            onComplete && onComplete();
+            onComplete && onComplete(target);
+        },
+        onStart: (target) => {
+            onStart && onStart(target);
         },
         onCompleteParams: [target],
+        onStartParams: [target],
         repeat: 0,
-        height: target.offsetHeight * (amount ?? 1)
+        height: value ?? (target.offsetHeight * (amount ?? 1))
     });
 
     return Tween;
