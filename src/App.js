@@ -27,7 +27,7 @@ import {
 
 function App() {
 	const [playBso, setPlayBso] = useState(false);
-	const [startTime, setStartTime] = useState(Date.now());
+	const [startTime] = useState(Date.now());
 	const [time, setTime] = useState(0);
 	const [lightsOn, setLightsOn] = useState(false);
 	const [animationEnded, setAnimationEnded] = useState(false);
